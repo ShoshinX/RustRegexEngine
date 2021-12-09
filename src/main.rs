@@ -70,7 +70,6 @@ fn postfix_to_nfa(input: Vec<char>) -> (StateIndex, Vec<State>){
                 e1.out.extend(e2.out);
                 frags.push(Frag {start: states.len() - 1, out:e1.out });
             },
-            //TODO: ? and * currently have problems
             '?' => {
                 let mut e = frags.pop().unwrap();
                 let s = State::Double{c: SPLIT, out1: e.start, out: 0};
@@ -159,8 +158,6 @@ fn add_state(set: &mut std::collections::HashSet<StateIndex>, state: StateIndex,
 
 fn step(character: usize, cset: &mut std::collections::HashSet<StateIndex>, nset: &mut std::collections::HashSet<StateIndex>, states: &mut Vec<State>){
     nset.clear();
-    // TODO c is the character not the index, there's no if statement to check
-    // This is the parallel simultaneous step part
     for state in cset.iter(){
         match states.get(*state).unwrap() {
             State::Single{out,c,..} =>{
